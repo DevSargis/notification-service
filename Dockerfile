@@ -1,13 +1,25 @@
-# Use a slim JDK base image
-FROM eclipse-temurin:17-jdk-alpine
+# 🛠️ Stage 1: Build the application using Maven
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy Maven build artifact (JAR file) into the image
-COPY target/notification-service-0.0.1-SNAPSHOT.jar app.jar
+# Copy pom.xml and src for building
+COPY pom.xml .
+COPY src ./src
 
-# Expose the port your app runs on
+# Package the app without running tests
+RUN mvn clean package -DskipTests
+
+
+# 🚀 Stage 2: Run the application using slim JDK
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# Copy the built JAR from the builder stage
+COPY --from=builder /app/target/*.jar app.jar
+
+# Expose the port used by the Notification Service
 EXPOSE 8083
 
 # Run the application

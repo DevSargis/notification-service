@@ -20,3 +20,16 @@ kafka:
   password: ${KAFKA_PASSWORD}
   security-protocol: SASL_SSL
   sasl-mechanism: SCRAM-SHA-256
+
+  consumer:
+    group-id: notification-group
+    auto-offset-reset: earliest
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    properties:
+      spring.json.trusted.packages: "*"
+      security.protocol: SASL_SSL
+      sasl.mechanism: SCRAM-SHA-256
+      sasl.jaas.config: >
+        org.apache.kafka.common.security.scram.ScramLoginModule required
+        username="${KAFKA_USERNAME}" password="${KAFKA_PASSWORD}";

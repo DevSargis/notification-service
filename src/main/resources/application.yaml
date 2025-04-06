@@ -1,0 +1,22 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL_NOTIFICATION}
+    username: ${SPRING_DATASOURCE_USERNAME_NOTIFICATION}
+    password: ${SPRING_DATASOURCE_PASSWORD_NOTIFICATION}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+kafka:
+  bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+  username: ${KAFKA_USERNAME}
+  password: ${KAFKA_PASSWORD}
+  security-protocol: SASL_SSL
+  sasl-mechanism: SCRAM-SHA-256

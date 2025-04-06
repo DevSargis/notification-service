@@ -16,7 +16,10 @@ public class OrderEventConsumer {
 
     @KafkaListener(topics = "order-events", groupId = "notification-group")
     public void consume(OrderEvent event) {
+        // Force Hibernate to treat this as a new entity
+        event.setId(null);
         System.out.println("📥 Received event: " + event);
         repository.save(event);
     }
+
 }
